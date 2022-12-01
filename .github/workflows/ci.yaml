@@ -26,9 +26,19 @@ jobs:
           cache: true
           go-version-file: "go.mod"
 
-      - run: go mod download
+      - run: |
+          go mod download
+          go install github.com/jstemmer/go-junit-report@latest
 
-      - run: go test ./... -race
+      - name: go tests
+        run: go test -v 2>&1 ./... | go-junit-report -set-exit-code > report.xml
+
+      - name: Test Summary
+        uses: test-summary/action@v1
+        with:
+          paths: |
+            report.xml
+        if: always()
 
   lint:
     runs-on: ubuntu-latest
