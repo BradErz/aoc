@@ -28,8 +28,7 @@ func part1() error {
 	if err != nil {
 		return err
 	}
-	max := lo.Max(calories)
-	logrus.Infof("part 1: %+v", max)
+	logrus.Infof("part 1: %+v", lo.Max(calories))
 	return nil
 }
 
