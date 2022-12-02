@@ -1,0 +1,61 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+  pull-requests: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # running tests against our application 
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-go@v3
+        with:
+          cache: true
+          go-version-file: "go.mod"
+
+      - run: |
+          go mod download
+          go install github.com/jstemmer/go-junit-report@latest
+
+      - name: go tests
+        run: go test -v 2>&1 ./... | go-junit-report -set-exit-code > report.xml
+
+      - name: Test Summary
+        uses: test-summary/action@v2
+        with:
+          paths: |
+            report.xml
+        if: always()
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-go@v3
+        with:
+          cache: true
+          go-version-file: "go.mod"
+
+      - run: go mod download
+
+      - uses: golangci/golangci-lint-action@v3
+        with:
+          only-new-issues: true
+          # these caches are handled by the setup-go action
+          # we are still using the caching of this action for the golangci-lint specific caches
+          skip-pkg-cache: true
+          skip-build-cache: true      

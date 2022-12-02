@@ -3,6 +3,7 @@ module github.com/BradErz/aoc
 go 1.19
 
 require (
+	github.com/jstemmer/go-junit-report v1.0.0
 	github.com/samber/lo v1.36.0
 	github.com/sirupsen/logrus v1.9.0
 	github.com/stretchr/testify v1.8.0

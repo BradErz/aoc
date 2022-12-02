@@ -1,0 +1,127 @@
+# options for analysis running
+run:
+  # timeout for analysis, e.g. 30s, 5m, default is 1m
+  deadline: 2m
+
+  # exit code when at least one issue was found, default is 1
+  issues-exit-code: 1
+
+  # include test files or not, default is true
+  ## if we dont include tests we might run into issues like so:
+  ## https://github.com/golang/go/wiki/CommonMistakes#using-reference-to-loop-iterator-variable
+  ## we can look at disabling some linters explicitly on tests as we see they are needed.
+  tests: true
+
+linters-settings:
+  gosec:
+    checks:
+      - all
+      - '-G404'
+      - '-G102'
+      
+  gocritic:
+    enabled-tags:
+      - diagnostic
+      - experimental
+      - opinionated
+      - performance
+      - style
+    disabled-checks:
+      ## these were the default disabled-checks i found somewhere on the internet, i think cause they are caught by
+      ## other linters
+      - dupImport # https://github.com/go-critic/go-critic/issues/845
+      - ifElseChain
+      - octalLiteral
+      - whyNoLint
+      - wrapperFunc
+
+  # Set max line length... nothing should ever exceed this
+  lll:
+    line-length: 240
+
+  maligned:
+    suggest-new: true
+
+linters:
+  disable-all: true
+  enable:
+    - govet
+    - errcheck
+    - staticcheck
+    - unused
+    - gosimple
+    - stylecheck
+    - ineffassign
+    - typecheck
+    - exportloopref
+    - gocritic
+    - revive
+    - gosec
+    - lll
+
+issues:
+  exclude:
+    - "G102:" # binds to all interfaces
+    - "G404:" # gosec use of math.Rand vs crypto.Rand
+    - "commentedOutCode:" # gocritic 
+
+  exclude-rules:
+    ## this linting rule might make sense when creating a library but doesn't make sense when returning something to
+    ## satisfy an interface
+    ## e.g.
+    ## docker/service.go:28:75: exported func NewService returns un-exported type *github.com/faceit/environments-service/docker.dockerService, which can be annoying to use (golint)
+    - linters:
+        - revive
+      text: "which can be annoying to use"
+
+    ## These rules are disabled as it recommends `AnimalsApiUrl` to become `AnimalsAPIURL` which isn't very clear.
+    ## hence why it is disabled.
+    ## https://staticcheck.io/docs/checks#ST1003
+    - linters:
+        - revive
+      text: ".*should be.*"
+    - linters:
+        - stylecheck
+      text: "ST1003:"
+
+
+severity:
+  # apparently we need to define this if we want also to provide the customisation
+  default-severity: error
+
+  rules:
+    - linters:
+        - golint
+      severity: info
+
+      # Deprecation issues will be marked with severity "info" to avoid build failures (default is error)
+      # _type\severity_|__error__|_____warning____|______info______|_____ignore_____|
+      #error                 |bug/major|code_smell/major|code_smell/major|code_smell/major|
+      #warning               |bug/minor|code_smell/major|code_smell/major|code_smell/major|
+      #info                      |bug/minor|code_smell/minor|code_smell/minor|code_smell/major|
+      #ignore                  |bug/minor|code_smell/major|code_smell/major|code_smell/major|
+    - linters:
+        - staticcheck
+      text: "SA1019:"
+      severity: info
+    - linters:
+        - staticcheck
+      # SA4006 is the code for issue "the value X is never used"
+      text: "SA4006:"
+      severity: warning
+    - linters:
+        - gocritic
+      text: "commentFormatting:"
+      severity: warning
+    - linters:
+        - gocritic
+      text: "unnamedResult:"
+      severity: warning
+    - linters:
+        - golangci-lint
+      text: "unused:"
+      severity: warning
+    - linters:
+        - golangci-lint
+      text: "deadcode:"
+      severity: warning

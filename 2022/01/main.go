@@ -67,7 +67,6 @@ func getCalories(reader io.Reader) []int {
 		calories []int
 	)
 	for scanner.Scan() {
-		scanner.Bytes()
 		txt := scanner.Text()
 		if txt == "" {
 			// add a new total to the list
