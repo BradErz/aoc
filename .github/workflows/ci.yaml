@@ -58,4 +58,4 @@ jobs:
           # these caches are handled by the setup-go action
           # we are still using the caching of this action for the golangci-lint specific caches
           skip-pkg-cache: true
-          skip-build-cache: true      
+          skip-build-cache: true
