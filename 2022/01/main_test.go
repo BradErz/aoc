@@ -24,7 +24,7 @@ var input = `1000
 
 10000`
 
-func BenchmarkPart1(b *testing.B) {
+func BenchmarkDay01Part1(b *testing.B) {
 	f, err := os.Open("testdata/input.txt")
 	require.NoError(b, err)
 	defer f.Close()
@@ -38,7 +38,7 @@ func BenchmarkPart1(b *testing.B) {
 	}
 }
 
-func BenchmarkPart2(b *testing.B) {
+func BenchmarkDay01Part2(b *testing.B) {
 	f, err := os.Open("testdata/input.txt")
 	require.NoError(b, err)
 	defer f.Close()
@@ -52,7 +52,7 @@ func BenchmarkPart2(b *testing.B) {
 	}
 }
 
-func TestPart1(t *testing.T) {
+func TestDay01Part1(t *testing.T) {
 	t.Run("example", func(t *testing.T) {
 		reader := strings.NewReader(input)
 		ans, err := part1(reader)
@@ -68,7 +68,7 @@ func TestPart1(t *testing.T) {
 	})
 }
 
-func TestPart2(t *testing.T) {
+func TestDay01Part2(t *testing.T) {
 	t.Run("example", func(t *testing.T) {
 		reader := strings.NewReader(input)
 		ans, err := part2(reader)

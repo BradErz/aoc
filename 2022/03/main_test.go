@@ -16,7 +16,7 @@ wMqvLMZHhHMvwLHjbvcjnnSBnvTQFn
 ttgJtRGJQctTZtZT
 CrZsJsPPZsGzwwsLwLmpwMDw`
 
-func TestPart1(t *testing.T) {
+func TestDay03Part1(t *testing.T) {
 	t.Run("example", func(t *testing.T) {
 		ans := testPart1(t, strings.NewReader(input))
 		require.Equal(t, 157, ans)
@@ -36,7 +36,7 @@ func testPart1(t testing.TB, reader io.Reader) int {
 	return ans
 }
 
-func TestPart2(t *testing.T) {
+func TestDay03Part2(t *testing.T) {
 	t.Run("example", func(t *testing.T) {
 		ans := testPart2(t, strings.NewReader(input))
 		require.Equal(t, 70, ans)
@@ -56,7 +56,7 @@ func testPart2(t testing.TB, reader io.Reader) int {
 	return ans
 }
 
-func BenchmarkPart1(b *testing.B) {
+func BenchmarkDay03Part1(b *testing.B) {
 	f, err := os.Open("testdata/input.txt")
 	require.NoError(b, err)
 
@@ -67,7 +67,7 @@ func BenchmarkPart1(b *testing.B) {
 	}
 }
 
-func BenchmarkPart2(b *testing.B) {
+func BenchmarkDay03Part2(b *testing.B) {
 	f, err := os.Open("testdata/input.txt")
 	require.NoError(b, err)
 
