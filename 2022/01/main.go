@@ -2,40 +2,13 @@ package main
 
 import (
 	"bufio"
-	"bytes"
 	"io"
-	"os"
 	"strconv"
 
 	"golang.org/x/exp/slices"
 
 	"github.com/samber/lo"
-
-	"github.com/sirupsen/logrus"
 )
-
-func main() {
-	f, err := os.Open("2022/01/testdata/input.txt")
-	if err != nil {
-		logrus.WithError(err).Fatal("failed to open file")
-	}
-	defer f.Close()
-
-	var buf bytes.Buffer
-	tee := io.TeeReader(f, &buf)
-
-	p1Ans, err := part1(tee)
-	if err != nil {
-		logrus.WithError(err).Fatal("got an error running part1")
-	}
-	logrus.Infof("part 1: %d", p1Ans)
-
-	p2Ans, err := part2(&buf)
-	if err != nil {
-		logrus.WithError(err).Fatal("got an error running part2")
-	}
-	logrus.Infof("part 2: %d", p2Ans)
-}
 
 // Find the Elf carrying the most Calories. How many total Calories is that Elf carrying?
 func part1(reader io.Reader) (int, error) {
