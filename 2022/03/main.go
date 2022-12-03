@@ -21,16 +21,18 @@ func part1(reader io.Reader) (int, error) {
 		compartment1 := txt[:len(txt)/2]
 		compartment2 := txt[len(txt)/2:]
 
-		var itemType rune
-
-		// find the common value which gives us the itemType
-		for _, item1 := range compartment1 {
-			for _, item2 := range compartment2 {
-				if item1 == item2 {
-					itemType = item1
+		findItemType := func(c1, c2 string) rune {
+			// find the common value which gives us the itemType
+			for _, item1 := range c1 {
+				for _, item2 := range c2 {
+					if item1 == item2 {
+						return item1
+					}
 				}
 			}
+			return 0
 		}
+		itemType := findItemType(compartment1, compartment2)
 
 		// we take the index of the rune inside the priorities and add 1 to get the priority
 		total += lo.IndexOf(lo.LettersCharset, itemType) + 1
@@ -52,20 +54,36 @@ func part2(reader io.Reader) (int, error) {
 	}
 
 	for _, group := range lo.Chunk(groups, 3) {
-		var commonC rune
-		// TODO: this works, however my brain is not yet awake enough
-		// to solve this in a better way
-		for _, elf1C := range group[0] {
-			for _, elf2C := range group[1] {
-				for _, elf3C := range group[2] {
-					//nolint:gocritic // :cry:
-					if elf1C == elf2C && elf1C == elf3C {
-						commonC = elf1C
-					}
-				}
-			}
-		}
 
+		findCommonChar := func(group []string) rune {
+			commonChars := map[rune]struct{}{}
+			commonCharsIntersection := map[rune]struct{}{}
+			for _, v := range group[0] {
+				if _, ok := commonChars[v]; ok {
+					continue
+				}
+				commonChars[v] = struct{}{}
+			}
+
+			// search in the 2nd group for common chars
+			for _, v := range group[1] {
+				if _, ok := commonChars[v]; ok {
+					commonCharsIntersection[v] = struct{}{}
+				}
+				continue
+			}
+
+			// search commonCharsIntersection in the 3rd group and early return
+			for _, v := range group[2] {
+				if _, ok := commonCharsIntersection[v]; ok {
+					return v
+				}
+				continue
+			}
+
+			return 0
+		}
+		commonC := findCommonChar(group)
 		total += lo.IndexOf(lo.LettersCharset, commonC) + 1
 	}
 

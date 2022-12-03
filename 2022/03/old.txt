@@ -1,0 +1,8 @@
+goos: linux
+goarch: amd64
+pkg: github.com/BradErz/aoc/2022/03
+cpu: AMD Ryzen 9 3900X 12-Core Processor            
+BenchmarkPart1-24    	   18676	     64771 ns/op	   10624 B/op	     137 allocs/op
+BenchmarkPart2-24    	     313	   3790874 ns/op	   34096 B/op	     312 allocs/op
+PASS
+ok  	github.com/BradErz/aoc/2022/03	3.441s

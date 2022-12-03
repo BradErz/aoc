@@ -1,0 +1,11 @@
+name      old time/op    new time/op    delta
+Part1-24    64.8µs ± 0%    51.3µs ± 0%   ~     (p=1.000 n=1+1)
+Part2-24    3.79ms ± 0%    0.23ms ± 0%   ~     (p=1.000 n=1+1)
+
+name      old alloc/op   new alloc/op   delta
+Part1-24    10.6kB ± 0%    10.6kB ± 0%   ~     (all equal)
+Part2-24    34.1kB ± 0%    64.8kB ± 0%   ~     (p=1.000 n=1+1)
+
+name      old allocs/op  new allocs/op  delta
+Part1-24       137 ± 0%       137 ± 0%   ~     (all equal)
+Part2-24       312 ± 0%       644 ± 0%   ~     (p=1.000 n=1+1)
